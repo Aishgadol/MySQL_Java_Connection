@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.io.*;
 public class Main {
 
     public static void main(String[] args) {
@@ -11,19 +12,32 @@ public class Main {
             Statement st=con.createStatement();
             ResultSet rs=st.executeQuery("select * from players");
             int colCount=rs.getMetaData().getColumnCount();
-            System.out.printf("%-10s %-20s %-10s %-5s%n", "PlayerID", "PlayerName", "TeamNum", "Age");
+            FileWriter fw=new FileWriter("mock_readme.txt");
+            String s=String.format("%-10s %-20s %-10s %-5s%n", "PlayerID", "PlayerName", "TeamNum", "Age");
+            fw.write(s);
+            System.out.printf(s);
             while(rs.next()){
-
-                System.out.printf("%-10d %-20s %-10d %-5d%n",
+                s=String.format("%-10d %-20s %-10d %-5d%n",
                         rs.getInt("playerid"),
                         rs.getString("playername"),
                         rs.getInt("teamnum"),
-                        rs.getInt("age")); // Move to the next line
+                        rs.getInt("age"));
+                System.out.printf(s); // Move to the next line
+                fw.write(s);
             }
+            fw.flush();
         }
         catch (Exception e){
             e.printStackTrace();
+        }/*
+        try{
+            if(fw!=null){
+                fw.close();
+            }
         }
+        catch(IOException e){
+            e.printStackTrace();
+        }*/
         try{
             if(con!=null){
                 con.close();
