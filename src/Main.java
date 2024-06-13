@@ -7,21 +7,21 @@ public class Main {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/lab6_db",
+                    "jdbc:mysql://localhost:3306/sakila",
                     "root","<hidden password will change when needed to access mysql>");
             Statement st=con.createStatement();
-            ResultSet rs=st.executeQuery("select * from players");
+            ResultSet rs=st.executeQuery("select * from city");
             int colCount=rs.getMetaData().getColumnCount();
             FileWriter fw=new FileWriter("mock_readme.txt");
-            String s=String.format("%-10s %-20s %-10s %-5s%n", "PlayerID", "PlayerName", "TeamNum", "Age");
+            String s=String.format("%-10s %-20s %-10s %-5s%n", "city_id", "city", "country_id","last_update");
             fw.write(s);
             System.out.printf(s);
             while(rs.next()){
-                s=String.format("%-10d %-20s %-10d %-5d%n",
-                        rs.getInt("playerid"),
-                        rs.getString("playername"),
-                        rs.getInt("teamnum"),
-                        rs.getInt("age"));
+                s=String.format("%-10s %-30s %-10s %-5s%n",
+                        rs.getInt("city_id"),
+                        rs.getString("city"),
+                        rs.getInt("country_id"),
+                        rs.getTimestamp("last_update"));
                 System.out.printf(s); // Move to the next line
                 fw.write(s);
             }
